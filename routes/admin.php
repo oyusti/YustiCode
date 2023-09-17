@@ -4,6 +4,5 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('welcome');
-    //return "Vista de Administrador";
-});
+    return  view('admin.dashboard');     
+})->name('admin.dashboard');
