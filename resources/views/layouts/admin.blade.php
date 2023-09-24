@@ -15,15 +15,23 @@
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/03221c46fa.js" crossorigin="anonymous"></script>
     
-    
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Sweet Alert 2-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Styles -->
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased sm:overflow-visible"
+    :class="{
+        'overflow-hidden': sidebarOpenMobile,
+    }"
+    x-data="{ 
+        sidebarOpenMobile: false,
+    }">
 
 
     @include('layouts.includes.admin.nav')
@@ -38,6 +46,10 @@
         </div>
     </div>
 
+    <div x-show="sidebarOpenMobile"
+        x-on:click="sidebarOpenMobile = false"
+        style="display:none;" 
+        class="bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-30 sm:hidden"></div>
 
     @stack('modals')
 
