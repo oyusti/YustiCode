@@ -7,11 +7,12 @@
             'active' => request()->routeIs('admin.dashboard'),
             'icon' => 'fa-solid fa-gauge-high'
         ],
-        /* [
-            'name' => 'Blog',
-            'route' => route('blog'),
-            'active' => request()->routeIs('blog'),
-        ] */
+        [
+            'name' => 'Categorias',
+            'route' => route('admin.categories.index'),
+            'active' => request()->routeIs('admin.categories.*'),
+            'icon' => 'fa-solid fa-inbox'
+        ]
     ];
 
 @endphp
