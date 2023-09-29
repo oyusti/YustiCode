@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return  view('admin.dashboard');     
-})->name('admin.dashboard');
+})->name('dashboard');
 
 route::resource('/categories', CategoryController::class)
-        ->names('admin.categories');
+        ->names('categories');
