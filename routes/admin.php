@@ -10,4 +10,5 @@ Route::get('/', function () {
 })->name('dashboard');
 
 route::resource('/categories', CategoryController::class)
-        ->names('categories');
+        ->names('categories')
+        ->except('show');

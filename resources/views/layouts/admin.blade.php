@@ -23,6 +23,8 @@
 
     <!-- Styles -->
     @livewireStyles
+
+    @stack('css')
 </head>
 
 <body class="font-sans antialiased sm:overflow-visible"
@@ -54,6 +56,15 @@
     @stack('modals')
 
     @livewireScripts
+
+    @if (session('swal'))
+        <script>
+            Swal.fire(@json(session('swal')))
+        </script>
+    @endif
+
+    @stack('js')
+
 </body>
 
 </html>

@@ -1,12 +1,11 @@
 <x-admin-layout>
 
     
-    <div class="flex justify-between items-center">
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-            Categorías
-        </h1>
-        <a href="{{ route('admin.categories.create') }}" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-indigo-600 border border-transparent rounded-lg active:bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:shadow-outline-indigo">
-            Crear
+    <div class="flex justify-end mb-4">
+        <a href="{{ route('admin.categories.create') }}" class="text-white hover:text-gray-900 bg-gray-900 hover:bg-white 
+        hover:border border-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:text-white dark:bg-gray-600  dark:hover:border-gray-600 dark:hover:text-gray-400 
+        dark:focus:ring-gray-800">
+            Nuevo
         </a>
     </div>
 
@@ -37,7 +36,8 @@
                             {{ $category->name }}
                         </td>
                         <td class="px-6 py-4">
-                            <a href="{{ route('admin.categories.edit', $category) }}" class="text-indigo-600 hover:text-indigo-900">Editar</a>
+                            <a href="{{ route('admin.categories.edit', $category) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Editar</a>
+                            <a href="{{ route('admin.categories.destroy', $category) }}" class="text-red-600 hover:text-red-900">Eliminar</a>
                         </td>
                     </tr>
                 @endforeach

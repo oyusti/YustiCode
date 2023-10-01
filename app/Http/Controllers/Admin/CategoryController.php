@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -13,8 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate();
-        //return $categories;
+        $categories = Category::latest('id')->paginate();
         return view('admin.categories.index', compact('categories'));
     }
 
@@ -31,15 +31,23 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        //Validate form data
+        $request->validate([
+            'name' => 'required|unique:categories|max:255'
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
-    {
-        return view('admin.categories.show');
+        //Process form data
+        $category = Category::create($request->all());
+
+        //Store a message in session
+        session()->flash('swal', [
+            'icon'  => 'success',
+            'title' => 'Bien Hecho',
+            'text'  => 'La categoria ha sido creada correctamente'
+        ]);
+
+        //Return redirect
+        return redirect()->route('admin.categories.index');
     }
 
     /**
@@ -47,15 +55,36 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('admin.categories.edit');
+        return view('admin.categories.edit', compact('category'));
     }
+
+    /* public function show(Category $category)
+    {
+        return view('admin.categories.show', compact('category'));
+    } */
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Category $category)
     {
-        //
+        //Validate form data
+        $request->validate([
+            'name' => 'required|unique:categories|max:255'
+        ]);
+        
+        //Process form data
+        $category->update($request->all());
+
+        //Store a message in session
+        session()->flash('swal', [
+            'icon'  => 'success',
+            'title' => 'Bien Hecho',
+            'text'  => 'La categoria ha sido actualizada correctamente'
+        ]);
+
+        //Return redirect
+        return redirect()->route('admin.categories.edit', $category);
     }
 
     /**
@@ -63,6 +92,32 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+
+        //Validate if the posts has any category
+        $post = Post::where('category_id', $category->id)->exists();
+
+        if ($post) {
+            //Store a message in session
+            session()->flash('swal', [
+                'icon'  => 'error',
+                'title' => 'Error',
+                'text'  => 'La categoria no puede ser eliminada porque tiene posts asociados'
+            ]);
+
+            //Return redirect
+            return redirect()->route('admin.categories.index');
+        }
+
+        $category->delete();
+
+        //Store a message in session
+        session()->flash('swal', [
+            'icon'  => 'success',
+            'title' => 'Bien Hecho',
+            'text'  => 'La categoria ha sido eliminada correctamente'
+        ]);
+
+        //Return redirect
+        return redirect()->route('admin.categories.index');
     }
 }
