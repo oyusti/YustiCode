@@ -7,11 +7,19 @@
             'active' => request()->routeIs('admin.dashboard'),
             'icon' => 'fa-solid fa-gauge-high'
         ],
-        /* [
-            'name' => 'Blog',
-            'route' => route('blog'),
-            'active' => request()->routeIs('blog'),
-        ] */
+        [
+            'name' => 'Categorias',
+            'route' => route('admin.categories.index'),
+            'active' => request()->routeIs('admin.categories.*'),
+            'icon' => 'fa-solid fa-inbox'
+        ],
+        [
+            'name' => 'Posts',
+            'route' => route('admin.posts.index'),
+            'active' => request()->routeIs('admin.posts.*'),
+            'icon' => 'fa-solid fa-blog'
+        ]
+
     ];
 
 @endphp
@@ -29,8 +37,8 @@
 
             @foreach ($links as $link)
                 <li>
-                    <a href=href="{{ $link['route'] }}"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{$link['active']}} ? bg-gray-100 : '' ">
+                    <a href="{{ $link['route'] }}"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{$link['active'] ? 'bg-gray-100' : ''}}">
                         <i class="{{ $link['icon']}} text-gray-500"></i>
                         <span class="ml-3">{{ $link['name'] }}</span>
                     </a>
