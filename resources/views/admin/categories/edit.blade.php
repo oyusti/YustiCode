@@ -1,8 +1,7 @@
 <x-admin-layout>
 
-    <form action="{{ route('admin.categories.update', $category) }}" 
-            method="post"
-            class=" bg-white rounded-lg p-6 shadow-lg">
+    <form action="{{ route('admin.categories.update', $category) }}" method="post"
+        class=" bg-white rounded-lg p-6 shadow-lg">
         @csrf
         @method('PUT')
 
@@ -11,11 +10,11 @@
         </x-validation-errors>
 
         <div class="mb-6">
-            
+
             <x-label>
                 Nombre:
             </x-label>
-            
+
             <x-input name="name" placeholder="Escriba el nombre" value="{{ $category->name }}">
 
             </x-input>
@@ -36,21 +35,33 @@
         </div>
     </form>
 
-    <form   action=" {{ route('admin.categories.destroy', $category) }}" 
-            id="formDeleteCategory" 
-            method="POST">
+    <form action=" {{ route('admin.categories.destroy', $category) }}" id="formDeleteCategory" method="POST">
         @csrf
         @method('DELETE')
 
         @push('js')
             <script>
-                function deleteCategory(){
-                    let form = document.getElementById('formDeleteCategory');
-                    form.submit();
+                function deleteCategory() {
+                    event.preventDefault();
+                    //Modal de confirmacion
+                    Swal.fire({
+                        title: 'Esta usted seguro?',
+                        text: "Usted no podra revertir esto!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Si!'
+                    }).then((result) => {
+                        if (result.isConfirmed){
+                            let form = document.getElementById('formDeleteCategory');
+                            form.submit();
+                        }
+                    })
                 }
             </script>
         @endpush
-        
+
     </form>
 
 </x-admin-layout>

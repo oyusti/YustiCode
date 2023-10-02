@@ -108,6 +108,8 @@ class CategoryController extends Controller
             return redirect()->route('admin.categories.index');
         }
 
+        
+
         $category->delete();
 
         //Store a message in session
