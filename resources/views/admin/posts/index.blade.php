@@ -1,15 +1,29 @@
 <x-admin-layout>
 
+    <div class="flex justify-end mb-4">
+        <a href="{{ route('admin.posts.create') }}"
+            class="text-white hover:text-gray-900 bg-gray-900 hover:bg-white 
+        hover:border border-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:text-white dark:bg-gray-600  dark:hover:border-gray-600 dark:hover:text-gray-400 
+        dark:focus:ring-gray-800">
+            Nuevo
+        </a>
+    </div>
+    
+
     <ul class=" space-y-8">
         @foreach ($posts as $post)
-            <li class=" grid grid-cols-2 gap-4">
+            <li class=" grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
-                    <img class=" aspect-[16/9] object-cover object-center" src="{{ $post->image_path }}" alt="">
+                    <a href="{{ route('admin.posts.edit', $post) }}">
+                        <img class=" aspect-[16/9] object-cover object-center w-full" src="{{ $post->image_path }}" alt="">
+                    </a>
                 </div>
                 <div>
-                    <h1 class=" text-xl font-semibold">
-                        {{ $post->title }}
-                    </h1>
+                    <a href="{{ route('admin.posts.edit', $post) }}">
+                        <h1 class=" text-xl font-semibold">
+                            {{ $post->title }}
+                        </h1>
+                    </a>
 
                     <hr class=" mt-1 mb-2">
 
@@ -21,7 +35,7 @@
                     </span>
 
                     <p class=" text-gray-700 mt-2">
-                        {{ $post->excerpt }}
+                        {{ Str::limit($post->body, 200)}}
                     </p>
 
                     <div class=" mt-4 flex justify-end">

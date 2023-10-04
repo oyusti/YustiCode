@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+    protected $fillable = [
+        'title', 
+        'slug', 
+        'category_id', 
+        'user_id'
+    ];
+    
     use HasFactory;
 
     //Relationships one to many inverse
