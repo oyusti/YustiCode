@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,6 +16,14 @@ class Post extends Model
     ];
     
     use HasFactory;
+
+    //Accessors for attributes image if no image is set
+    protected function image(): Attribute
+    {
+        return new Attribute(
+            get: fn() => $this->image_path ?? 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg'
+        );
+    }
 
     //Relationships one to many inverse
     public function category()
