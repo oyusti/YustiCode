@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory(20)->create();
         \App\Models\Category::factory(5)->create();
         \App\Models\Post::factory(100)->create();
-
+        $this->call(TagSeeder::class);
          
     }
 }

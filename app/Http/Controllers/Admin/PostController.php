@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -14,8 +15,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest()->paginate(10);
-
+        $posts = Post::latest('id')->paginate(10);
         return view('admin.posts.index', compact('posts'));
 
     }
@@ -46,7 +46,7 @@ class PostController extends Controller
             'title' => $request->title,
             'slug' => $request->slug,
             'category_id' => $request->category_id,
-            'user_id' => auth()->user()->id,
+            //'user_id' => auth()->user()->id,
         ]);
 
         //Store a message in session
@@ -71,11 +71,42 @@ class PostController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
+    * Update the specified resource in storage.
+    */
     public function update(Request $request, Post $post)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'slug' => 'required | unique:posts,slug,' . $post->id,
+            'category_id' => 'required | exists:categories,id',
+            'excerpt' => $request->published ? 'required' :'nullable',
+            'body' => $request->published ? 'required' :'nullable',
+            'published' => 'required|boolean',
+            'tags' => 'nullable|array',
+        ]);
+
+        //create tags
+        $tags = [];
+
+        //create tags
+        foreach ($request->tags ?? [] as $tag) {
+            $tags[] = Tag::firstOrCreate([
+                'name' => $tag
+            ])->id;
+        }
+
+        //sync tags
+        $post->tags()->sync($tags);
+
+        $post->update($request->all());
+
+        session()->flash('swal', [
+            'icon'  => 'success',
+            'title' => 'Bien Hecho',
+            'text'  => 'El post ha sido actualizado correctamente'
+        ]);
+
+        return redirect()->route('admin.posts.index', $post);
     }
 
     /**
@@ -83,6 +114,14 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        session()->flash('swal', [
+            'icon'  => 'success',
+            'title' => 'Bien Hecho',
+            'text'  => 'El post ha sido eliminado correctamente'
+        ]);
+
+        return redirect()->route('admin.posts.index');
     }
 }

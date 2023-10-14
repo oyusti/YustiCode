@@ -12,7 +12,10 @@ class Post extends Model
         'title', 
         'slug', 
         'category_id', 
-        'user_id'
+        'excerpt',
+        'body',
+        'user_id',
+        'published'
     ];
     
     use HasFactory;

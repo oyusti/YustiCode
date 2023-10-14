@@ -38,6 +38,7 @@
     <form action=" {{ route('admin.categories.destroy', $category) }}" id="formDeleteCategory" method="POST">
         @csrf
         @method('DELETE')
+    </form>
 
         @push('js')
             <script>
@@ -62,6 +63,6 @@
             </script>
         @endpush
 
-    </form>
+    
 
 </x-admin-layout>
