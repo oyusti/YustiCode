@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
 {
@@ -15,7 +16,8 @@ class Post extends Model
         'excerpt',
         'body',
         'user_id',
-        'published'
+        'published',
+        'image_path'
     ];
     
     use HasFactory;
@@ -24,7 +26,19 @@ class Post extends Model
     protected function image(): Attribute
     {
         return new Attribute(
-            get: fn() => $this->image_path ?? 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg'
+            //get: fn() => $this->image_path ?? 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg'
+            get: function(){
+                if($this->image_path){
+                    //Verificar si la imagen comienza con https:// o http://
+                    if(strpos($this->image_path, 'https://') === false && strpos($this->image_path, 'http://') === false){
+                        return Storage::url($this->image_path);
+                    }else{
+                        return $this->image_path;
+                    }
+                }else{
+                    return 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg';
+                }
+            }
         );
     }
 

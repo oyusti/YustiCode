@@ -4,10 +4,40 @@
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     @endpush
 
-    <form action="{{ route('admin.posts.update', $post) }}" method="POST">
+    <form action="{{ route('admin.posts.update', $post) }}" 
+        method="POST"
+        enctype="multipart/form-data">
 
         @csrf
         @method('PUT')
+
+        <div class=" mb-6 relative">
+            <figure>
+                @isset($post->image)
+                    <img  class="w-full h-100 aspect-{16/9} object-cover object-center" 
+                            src=" {{$post->image}}"
+                            alt=""
+                            id="imgPreview">
+                @endisset
+            </figure>
+            <div class=" absolute top-16 right-8">
+                <label for="file" class="absolute bottom-0 right-0 inline-flex items-center justify-center w-10 h-10 bg-gray-900 rounded-full cursor-pointer">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="{2}"
+                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    <input type="file" 
+                            name="image" 
+                            accept="image/*" 
+                            id="file" 
+                            class="hidden"
+                            onchange="previewImage(event, '#imgPreview')">
+                </label>
+                
+            </div>
+        </div>
+
 
         <h1 class=" text-3xl mb-4">
             Editar Post
@@ -150,9 +180,24 @@
     </form>
 
     @push('js')
+        {{-- script para previsualizar una imagen --}}
+        <script>
+            function previewImage(event, id) {
+                if (event.target.files.length > 0) {
+                    let src = URL.createObjectURL(event.target.files[0]);
+                    let preview = document.querySelector(id);
+                    preview.src = src;
+                    preview.style.display = "block";
+                }
+            }
+        </script>
+            
+        {{-- script para el select2 --}}
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+        {{-- script para el select2 de etiquetas para llenar con ajax --}}
         <script>
             $(document).ready(function() {
                 $('.tag-multiple').select2({
@@ -176,6 +221,8 @@
                 });
             });
         </script>
+            
+            {{-- script para el sweetalert --}}
         <script>
             function deletePost() {
                 event.preventDefault();
