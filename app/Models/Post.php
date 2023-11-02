@@ -65,4 +65,10 @@ class Post extends Model
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
+
+    //relationships one to many polymorphic
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
+    }
 }

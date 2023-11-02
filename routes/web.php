@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ImageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,3 +30,6 @@ Route::middleware([
         return view('blog');
     })->name('blog');
 });
+
+route::post('image/upload', [ImageController ::class, 'upload'])
+        ->name('image.upload');

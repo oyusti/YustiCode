@@ -76,6 +76,7 @@ class PostController extends Controller
     */
     public function update(Request $request, Post $post)
     {
+
         $request->validate([
             'title' => 'required',
             'slug' => 'required | unique:posts,slug,' . $post->id,
@@ -84,8 +85,42 @@ class PostController extends Controller
             'body' => $request->published ? 'required' :'nullable',
             'published' => 'required|boolean',
             'tags' => 'nullable|array',
-            'image' => $request->published ? 'required|image' :'nullable|image',
+            //'image' => $request->published ? 'required|image' :'nullable|image',
+            'image' => 'nullable|image',
         ]);
+
+        //old images
+        $old_images = $post->images()->pluck('path')->toArray();
+
+        // regular expression for image inside body
+        $re_extractImages = '/src=["\']([^ ^"^\']*)["\']/ims';
+        preg_match_all($re_extractImages, $request->body, $matches);
+        $images = $matches[1];
+
+        //replace images
+        foreach($images as $key => $image){
+            $images[$key] = 'images/' . pathinfo($image, PATHINFO_BASENAME);
+        }
+
+        //new images
+        $new_images = array_diff($images, $old_images);
+
+        //delete images
+        $delete_images = array_diff($old_images, $images);
+
+        //create images
+        foreach ($new_images as $image) {
+            $post->images()->Create([
+                'path' => $image
+            ]);
+        }
+
+        //delete images for database and storage
+        foreach ($delete_images as $image) {
+            $post->images()->where('path', $image)->delete();
+            Storage::delete($image);
+        }
+        
 
         $data = [];
         $data = $request->all();
@@ -109,13 +144,19 @@ class PostController extends Controller
             if($post->image_path){
                 //delete old image
                 Storage::delete($post->image_path);
+
             }
             //upload new image
-            $data['image_path'] = Storage::put('posts', $request->image);
+            $file_name = $request->slug . '.' . $request->file('image')->getClientOriginalExtension();
+            /* $data['image_path'] = Storage::putFileAs('posts', $request->image, $file_name); */
+            $data['image_path'] = $request->file('image')->storeAs('posts', $file_name);
         }
+        
         
 
         $post->update($data);
+
+        
 
         session()->flash('swal', [
             'icon'  => 'success',

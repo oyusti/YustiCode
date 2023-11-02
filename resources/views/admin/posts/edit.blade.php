@@ -133,9 +133,11 @@
                     Cuerpo del post:
                 </x-label>
 
-                <x-textarea name="body" rows="8">
-                    {{ old('body', $post->body) }}
-                </x-textarea>
+                <div class="ckeditor">
+                    <x-textarea id="editor" name="body" rows="8">
+                        {{ old('body', $post->body) }}
+                    </x-textarea>
+                </div>
 
                 @error('body')
                     <span class="mt-1 text-xs text-red-600">{{ $message }}</span>
@@ -190,6 +192,27 @@
                     preview.style.display = "block";
                 }
             }
+
+           /*  script para el sweetalert */
+        
+            function deletePost() {
+                event.preventDefault();
+                //Modal de confirmacion
+                Swal.fire({
+                    title: 'Esta usted seguro?',
+                    text: "Usted no podra revertir esto!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let form = document.getElementById('formDeletePost');
+                        form.submit();
+                    }
+                })
+            }
         </script>
             
         {{-- script para el select2 --}}
@@ -221,28 +244,30 @@
                 });
             });
         </script>
-            
-            {{-- script para el sweetalert --}}
+
+        {{-- script para el editor de texto --}}
         <script>
-            function deletePost() {
-                event.preventDefault();
-                //Modal de confirmacion
-                Swal.fire({
-                    title: 'Esta usted seguro?',
-                    text: "Usted no podra revertir esto!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Si!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        let form = document.getElementById('formDeletePost');
-                        form.submit();
+            ClassicEditor
+            .create( document.querySelector( '#editor' ), {
+                simpleUpload: {
+                    // The URL that the images are uploaded to.
+                    uploadUrl: '{{ route('image.upload') }}',
+
+                    // Enable the XMLHttpRequest.withCredentials property.
+                    withCredentials: true,
+
+                    // Headers sent along with the XMLHttpRequest to the upload server.
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                     }
-                })
-            }
+                }
+            } )
+            .catch( error => {
+            console.error( error );
+        } );
         </script>
+            
+            
     @endpush
 
 
