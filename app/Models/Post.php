@@ -60,6 +60,12 @@ class Post extends Model
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
+    //relationships many to many
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
     //relationships one to many polymorphic
     public function comments()
     {

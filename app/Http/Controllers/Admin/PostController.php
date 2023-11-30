@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\ResizeImage;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Gate;
+
 
 class PostController extends Controller
 {
@@ -16,7 +21,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest('id')->paginate(10);
+        $posts = Post::where('user_id', auth()->user()->id) 
+                ->latest('id')
+                ->paginate(10);
         return view('admin.posts.index', compact('posts'));
 
     }
@@ -67,6 +74,12 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        if(Gate::denies('author', $post)){
+            abort(403, 'Acceso no autorizado');
+        }
+
+        //$this->authorize('author', $post);
+
         $categories = Category::all();
         return view('admin.posts.edit', compact('post', 'categories'));
     }
@@ -148,12 +161,15 @@ class PostController extends Controller
             }
             //upload new image
             $file_name = $request->slug . '.' . $request->file('image')->getClientOriginalExtension();
-            /* $data['image_path'] = Storage::putFileAs('posts', $request->image, $file_name); */
-            $data['image_path'] = $request->file('image')->storeAs('posts', $file_name);
+            //$file_name = Str::slug($request->title) . '.' . $request->image->extension();
+            $data['image_path'] = Storage::putFileAs('posts', $request->image, $file_name, 'public');
+            //$data['image_path'] = $request->file('image')->storeAs('posts', $file_name);
+
+            //use dispatch for resize image job
+            ResizeImage::dispatch($data['image_path']);
+            
         }
         
-        
-
         $post->update($data);
 
         
