@@ -9,6 +9,8 @@ class Tag extends Model
 {
     use HasFactory;
 
+    protected $fillable=['name'];
+
     //relationships many to many polymorphic inverse
     public function posts()
     {
