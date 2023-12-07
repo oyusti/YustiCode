@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\RoleController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -17,3 +18,6 @@ route::resource('/categories', CategoryController::class)
 route::resource('/posts', PostController::class)
         ->names('posts')
         ->except('show');
+
+route::resource('/roles', RoleController::class)
+        ->names('roles');
