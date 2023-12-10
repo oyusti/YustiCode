@@ -1,6 +1,6 @@
 <x-admin-layout>
 
-    <form action="{{ route('admin.roles.update', $role) }}" 
+    <form action="{{ route('admin.permissions.update', $permission) }}" 
             method="post"
             class=" bg-white rounded-lg p-6 shadow-lg">
         @csrf
@@ -10,14 +10,13 @@
 
         </x-validation-errors>
 
-        {{-- div del nombre --}}
         <div class="mb-6">
             
             <x-label>
-                Nombre del rol:
+                Nombre del Permiso:
             </x-label>
             
-            <x-input name="name" placeholder="Escriba el nombre" value="{{ old('name', $role->name) }}">
+            <x-input name="name" placeholder="Escriba el nombre" value="{{ old('name', $permission->name) }}">
 
             </x-input>
 
@@ -26,27 +25,8 @@
             @enderror
         </div>
 
-        {{-- div de los permisos --}}
-        <div class=" mb-6">
-            <ul>
-                @foreach ($permissions as $permission)
-                    <li>
-                        <label>
-                            <x-checkbox name="permissions[]" value="{{ $permission->id }}" 
-                                :checked=" in_array($permission->id, old('permissions', $role->permissions->pluck('id')->toArray())) "
-                                > 
-                                
-                            </x-checkbox>
-                            {{ $permission->name }}
-                        </label>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-
-
         <div class=" flex justify-end">
-            <x-danger-button onclick="deleteRole()">
+            <x-danger-button onclick="deletePermission()">
                 Eliminar
             </x-danger-button>
             <x-button>
@@ -55,14 +35,14 @@
         </div>
     </form>
 
-    <form action=" {{ route('admin.roles.destroy', $role) }}" id="formDeleteRole" method="POST">
+    <form action=" {{ route('admin.permissions.destroy', $permission) }}" id="formDeletePermission" method="POST">
         @csrf
         @method('DELETE')
     </form>
 
         @push('js')
             <script>
-                function deleteRole() {
+                function deletePermission() {
                     event.preventDefault();
                     //Modal de confirmacion
                     Swal.fire({
@@ -75,7 +55,7 @@
                         confirmButtonText: 'Si!'
                     }).then((result) => {
                         if (result.isConfirmed){
-                            let form = document.getElementById('formDeleteRole');
+                            let form = document.getElementById('formDeletePermission');
                             form.submit();
                         }
                     })

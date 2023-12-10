@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 //use Laravel\Jetstream\Rules\Role;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 
 class RoleController extends Controller
@@ -24,7 +25,8 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view('admin.roles.create');
+        $permissions = Permission::all();
+        return view('admin.roles.create', compact('permissions'));
     }
 
     /**
@@ -33,10 +35,13 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required | unique:roles'
+            'name' => 'required | unique:roles',
+            'permissions' => 'nullable | array'
         ]);
 
         $role = Role::create($request->all());
+
+        $role->permissions()->sync($request->permissions);
 
         session()->flash('swal', [
             'icon'  => 'success',
@@ -44,7 +49,7 @@ class RoleController extends Controller
             'text'  => 'El rol ha sido creado correctamente'
         ]);
 
-        return redirect()->route('admin.roles.edit', $role);
+        return redirect()->route('admin.roles.index', $role);
     }
 
     /**
@@ -60,7 +65,8 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        return view('admin.roles.edit', compact('role'));
+        $permissions = Permission::all();
+        return view('admin.roles.edit', compact('role', 'permissions'));
     }
 
     /**
@@ -68,7 +74,22 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        //
+        $request->validate([
+            'name' => 'required | unique:roles,name,' . $role->id,
+            'permissions' => 'nullable | array'
+        ]);
+
+        $role->update($request->all());
+
+        $role->permissions()->sync($request->permissions);
+
+        session()->flash('swal', [
+            'icon'  => 'success',
+            'title' => 'Bien Hecho',
+            'text'  => 'El rol ha sido actualizado correctamente'
+        ]);
+
+        return redirect()->route('admin.roles.index', $role);
     }
 
     /**
@@ -76,6 +97,14 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        $role->delete();
+
+        session()->flash('swal', [
+            'icon'  => 'success',
+            'title' => 'Bien Hecho',
+            'text'  => 'El rol ha sido eliminado correctamente'
+        ]);
+
+        return redirect()->route('admin.roles.index', $role);
     }
 }

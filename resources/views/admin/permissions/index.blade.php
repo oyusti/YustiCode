@@ -1,7 +1,7 @@
 <x-admin-layout>
 
     <div class="flex justify-end mb-4">
-        <a href="{{ route('admin.roles.create') }}"
+        <a href="{{ route('admin.permissions.create') }}"
             class="text-white hover:text-gray-900 bg-gray-900 hover:bg-white 
         hover:border border-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:text-white dark:bg-gray-600  dark:hover:border-gray-600 dark:hover:text-gray-400 
         dark:focus:ring-gray-800">
@@ -9,7 +9,7 @@
         </a>
     </div>
 
-    @if($roles->isEmpty())
+    @if($permissions->isEmpty())
         <div class="flex justify-center items-center">
             <div class="bg-white shadow-lg rounded-lg p-6 m-4 w-full lg:w-3/4 lg:max-w-lg">
                 <div class="flex justify-center items-center">
@@ -44,17 +44,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($roles as $role)
+                    @foreach ($permissions as $permission)
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $role->id }}
+                                {{ $permission->id }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ $role->name }}
+                                {{ $permission->name }}
                             </td>
                             <td class="px-6 py-4">
-                                <a href="{{ route('admin.roles.edit', $role) }}"
+                                <a href="{{ route('admin.permissions.edit', $permission) }}"
                                     class="text-indigo-600 hover:text-indigo-900 mr-3">
                                     {{-- <i class="fa-solid fa-pen-to-square fa-lg" style="color: #1e3050;"></i> --}}
                                     Editar

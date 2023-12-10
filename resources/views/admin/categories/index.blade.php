@@ -40,41 +40,10 @@
                         <td class="px-6 py-4">
                             <a href="{{ route('admin.categories.edit', $category) }}"
                                 class="text-indigo-600 hover:text-indigo-900 mr-3">
-                                <i class="fa-solid fa-pen-to-square fa-lg" style="color: #1e3050;"></i>
+                                {{-- <i class="fa-solid fa-pen-to-square fa-lg" style="color: #1e3050;"></i> --}}
+                                Editar
                             </a>
-
-                            <button type="submit" onclick="DeleteCategoryIndex()">
-                                <i class="fa-solid fa-trash fa-lg" style="color: #1e3050;"></i>
-                            </button>
-
                         </td>
-                        <form action="{{ route('admin.categories.destroy', $category) }}" id="form_delete_category"
-                            method="POST">
-                            @csrf
-                            @method('DELETE')
-                            @push('js')
-                                <script>
-                                    function DeleteCategoryIndex() {
-                                        event.preventDefault();
-                                        //Modal de confirmacion
-                                        Swal.fire({
-                                            title: 'Esta usted seguro?',
-                                            text: "Usted no podra revertir esto!",
-                                            icon: 'warning',
-                                            showCancelButton: true,
-                                            confirmButtonColor: '#3085d6',
-                                            cancelButtonColor: '#d33',
-                                            confirmButtonText: 'Si!'
-                                        }).then((result) => {
-                                            if (result.isConfirmed) {
-                                                let form = document.getElementById('form_delete_category');
-                                                form.submit()
-                                            }
-                                        })
-                                    }
-                                </script>
-                            @endpush
-                        </form>
                     </tr>
                 @endforeach
             </tbody>

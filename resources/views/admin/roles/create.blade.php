@@ -9,6 +9,7 @@
 
         </x-validation-errors>
 
+        {{-- logica del nombre --}}
         <div class="mb-6">
             
             <x-label>
@@ -22,6 +23,24 @@
             @error('name')
                 <span class="mt-1 text-xs text-red-600">{{ $message }}</span>
             @enderror
+        </div>
+
+        {{-- Logica de los permisos --}}
+        <div class=" mb-6">
+            <ul>
+                @foreach ($permissions as $permission)
+                    <li>
+                        <label>
+                            <x-checkbox name="permissions[]" value="{{ $permission->id }}" 
+                                :checked=" in_array($permission->id, old('permissions', [])) "
+                                > 
+                                
+                            </x-checkbox>
+                            {{ $permission->name }}
+                        </label>
+                    </li>
+                @endforeach
+            </ul>
         </div>
 
         <div class=" flex justify-end">
