@@ -11,6 +11,14 @@ use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
+    /* Puedo proteger cualquier metodo demanera individual de esta forma, si lo hago por aca
+    no utilizoel middleware en las rutas */
+    
+    /* public function __construct()
+    {
+        $this->middleware('can:Gestion de Roles')->only('index', 'create', 'store', 'edit', 'update', 'destroy');
+    } */
+
     /**
      * Display a listing of the resource.
      */
