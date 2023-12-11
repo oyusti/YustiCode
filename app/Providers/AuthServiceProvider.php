@@ -23,6 +23,11 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
+        //Creamos un super administrador
+        Gate::after(function ($user, $ability) {
+            return $user->hasRole('Administrador'); // note this returns boolean
+         });
+
         /* Gate::define('admin', function($user){
             return $user->is_admin;
          }); */
