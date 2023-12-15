@@ -1,14 +1,22 @@
-<x-admin-layout>
+<x-admin-layout :breadcrumbs="[
+    [
+        'name' => 'Home',
+        'url' => route('admin.dashboard')
+    ],
+    [
+        'name' => 'Posts'
+    ]
+]">
 
-    <div class="flex justify-end mb-4">
+    <x-slot name="action">
         <a href="{{ route('admin.posts.create') }}"
             class="text-white hover:text-gray-900 bg-gray-900 hover:bg-white 
         hover:border border-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:text-white dark:bg-gray-600  dark:hover:border-gray-600 dark:hover:text-gray-400 
         dark:focus:ring-gray-800">
             Nuevo
         </a>
-    </div>
-    
+    </x-slot>
+
 
     <ul class=" space-y-8">
         @foreach ($posts as $post)

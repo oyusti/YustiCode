@@ -1,4 +1,16 @@
-<x-admin-layout>
+<x-admin-layout :breadcrumbs="[
+    [
+        'name' => 'Home',
+        'url' => route('admin.dashboard')
+    ],
+    [
+        'name' => 'Categorias',
+        'url' => route('admin.categories.index')
+    ],
+    [
+        'name' => 'Nuevo'
+    ]
+]">
 
     <form action="{{ route('admin.categories.store') }}" 
             method="post"

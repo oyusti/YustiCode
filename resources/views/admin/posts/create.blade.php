@@ -1,4 +1,16 @@
-<x-admin-layout>
+<x-admin-layout :breadcrumbs="[
+    [
+        'name' => 'Home',
+        'url' => route('admin.dashboard')
+    ],
+    [
+        'name' => 'Posts',
+        'url' => route('admin.posts.index')
+    ],
+    [
+        'name' => 'Nuevo'
+    ]
+]">
 
     <h1 class=" text-3xl mb-4">
         Nuevo Post

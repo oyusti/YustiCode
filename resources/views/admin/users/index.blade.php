@@ -1,4 +1,12 @@
-<x-admin-layout>
+<x-admin-layout :breadcrumbs="[
+    [
+        'name' => 'Home',
+        'url' => route('admin.dashboard')
+    ],
+    [
+        'name' => 'Usuarios'
+    ]
+]">
 
     @if($users->isEmpty())
         <div class="flex justify-center items-center">

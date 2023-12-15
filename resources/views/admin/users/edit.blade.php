@@ -1,4 +1,16 @@
-<x-admin-layout>
+<x-admin-layout :breadcrumbs="[
+    [
+        'name' => 'Home',
+        'url' => route('admin.dashboard')
+    ],
+    [
+        'name' => 'Usuarios',
+        'url' => route('admin.users.index')
+    ],
+    [
+        'name' => $user->name
+    ]
+]">
 
     <form action="{{ route('admin.users.update', $user) }}" 
             method="post"
