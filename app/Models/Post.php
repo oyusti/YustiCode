@@ -22,6 +22,10 @@ class Post extends Model
     
     use HasFactory;
 
+    protected $casts = [
+        'published_at' => 'datetime'
+    ];
+
     //Accessors for attributes image if no image is set
     protected function image(): Attribute
     {
@@ -76,5 +80,12 @@ class Post extends Model
     public function images()
     {
         return $this->morphMany(Image::class, 'imageable');
+    }
+
+    //Pasamos porla url el slug en vez del id del post
+    //Route Model Binding
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

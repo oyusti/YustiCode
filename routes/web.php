@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Post;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +17,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/',WelcomeController::class)->name('home');
+
+Route::get('posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
 Route::middleware([
     'auth:sanctum',
