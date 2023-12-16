@@ -18,7 +18,7 @@
 
         <div class=" mt-1 mb-1 flex items-center">
             <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                <img class="h-12 w-12 rounded-full object-cover" src="{{ $post->user->name->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                <img class="h-12 w-12 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
             </button>
             <div class=" flex flex-col ml-4">
                 <span class=" text-sm">
