@@ -13,6 +13,31 @@ class WelcomeController extends Controller
     {
 
         $posts = Post::where('published', true)
+            ->when(request('category'), function($query){
+                $query->whereIn('category_id', request('category'));
+            })->when(request('order' ?? 'new'), function($query){
+                if(request('order') == 'old'){
+                    $query->orderBy('published_at', 'asc');
+                }else{
+                    $query->orderBy('published_at', 'desc');
+                }
+            })->when(request('tag'), function($query){
+                $query->whereHas('tags', function($query){
+                    $query->where('tags.name', request('tag'));
+                });
+            })/* ->when(request('search'), function($query){
+                $query->where('title', 'like', '%' . request('search') . '%');
+            }) */
+            /* })->when(request('tag'), function($query){
+                $query->whereHas('tags', function($query){
+                    $query->whereIn('id', request('tag'));
+                });
+            })->when(request('search'), function($query){
+                $query->where('title', 'like', '%' . request('search') . '%');
+            }) */
+            /* ->when(request('search'), function($query) {
+                $query->where('title', 'like', '%' . request('search') . '%');
+            }) */
             ->orderBy('published_at', 'desc')
             ->orderBy('id', 'desc')
             ->paginate(10);

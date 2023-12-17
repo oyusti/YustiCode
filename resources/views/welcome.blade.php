@@ -69,16 +69,19 @@
                                 <hr class=" mt-1 mb-1">
     
                                 <div class=" mt-1 mb-1">
-    
+
                                     @foreach ($post->tags as $tag)
-                                        <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
-                                            {{ $tag->name }}
-                                        </span>
-                                    {{-- <a href="{{ route('posts.tag', $tag) }}" class=" inline-block bg-{{ $tag->color }}-600 rounded-full px-3 py-1 text-sm text-white">
-                                        {{ $tag->name }}
-                                    </a> --}}
+                                    
+                                        <a href="{{ route('home') . '?tag=' .$tag->name }}">
+
+                                            <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                                                {{ $tag->name }}
+                                            </span>
+
+                                        </a>
+                                        
                                     @endforeach
-    
+
                                 </div>
     
                                 <div class=" mb-2">
