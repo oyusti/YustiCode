@@ -82,6 +82,12 @@ class Post extends Model
         return $this->morphMany(Image::class, 'imageable');
     }
 
+    //relationships one to many polymorphic with questions
+    public function questions()
+    {
+        return $this->morphMany(Question::class, 'questionable');
+    }
+
     //Pasamos porla url el slug en vez del id del post
     //Route Model Binding
     public function getRouteKeyName()
