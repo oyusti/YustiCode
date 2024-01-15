@@ -35,8 +35,12 @@
                 src="{{ $post->image }}" alt="{{ $post->title }}">
         </figure>
 
-        <div class=" mt-4 mb-4">
+        <div class=" mt-4 mb-16">
             {!! $post->body !!}
+        </div>
+
+        <div>
+            @livewire('question', ['model' => $post])
         </div>
 
     </section>
