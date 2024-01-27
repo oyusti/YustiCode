@@ -8,7 +8,7 @@ use App\Models\Question as ModelsQuestion;
 
 class Question extends Component
 {
-    #[Rule('required', message:'Debe escribir un comentario')] // Add this line to replace the old validate attribute
+    //#[Rule('required', message:'Debe escribir un comentario')] // Add this line to replace the old validate attribute
     public $message;
 
     public $model;
@@ -30,15 +30,14 @@ class Question extends Component
 
     public function store(){
 
-        $this->validate();
-
+        $this->validate([
+            'message' => 'required'
+        ]);
         $this->model->questions()->create([
             'body' => $this->message,
             'user_id' => auth()->id()
         ]);
-
         $this->message = '';
-
         $this->getQuestions();
     }
 
@@ -53,18 +52,21 @@ class Question extends Component
     }
 
     public function update(){
-        $this->validateOnly('question_edit.body',[
-            'question_edit.body' => 'required'
-        ],
-        [
-            'question_edit.body.required' => 'Debe escribir un comentario'
-        ]);
+
+        $this->validate(
+            [
+                'question_edit.body' => 'required'
+            ],
+            [
+                'question_edit.body.required' => 'Debe escribir un comentario'
+            ]
+        );
 
         $question = ModelsQuestion::find($this->question_edit['id']);
         $question->update([
                 'body' => $this->question_edit['body']
-            ]
-        );
+            ]);
+        $this->resetValidation();    
         $this->getQuestions();
         $this->reset('question_edit'); // Reset the question_edit property (id and body
     }
@@ -79,6 +81,7 @@ class Question extends Component
         $question = ModelsQuestion::find($id);
         $question->delete();
         $this->getQuestions();
+        $this->reset('question_edit'); // Reset the question_edit property (id and body
     }
 
     public function render()

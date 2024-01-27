@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return  view('admin.dashboard');     
-})      ->middleware(['can:Gestion de Dashboard'])
+})      ->middleware(['can:Acceso de Dashboard'])
         ->name('dashboard');
 
 route::resource('/categories', CategoryController::class)

@@ -67,13 +67,13 @@
                                         {{ __('Manage Account') }}
                                     </div>
 
-                                    @can('admin')
+                                    {{-- @can('admin') --}}
 
                                         <x-dropdown-link href="{{ route('admin.dashboard') }}">
                                             Panel Administrativo
                                         </x-dropdown-link>
 
-                                    @endcan
+                                    {{-- @endcan --}}
                                         
                                     <x-dropdown-link href="{{ route('profile.show') }}">
                                         Tu Perfil
