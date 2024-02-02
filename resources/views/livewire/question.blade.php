@@ -6,8 +6,7 @@
         </figure>
 
         <div class=" flex-1 ">
-            <form wire:submit="store">
-
+            <form wire:submit="store()">
                 <textarea wire:model="message"
                     class=" block p-2.5 w-full text-gray-900 rounded-lg border border-gray-300
                     focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600
@@ -50,7 +49,7 @@
                             </span>
                         </p>
                         @if ($question->id == $question_edit['id'])
-                            <form wire:submit="update">
+                            <form wire:submit="update()">
                                 <textarea wire:model="question_edit.body"
                                     class=" block p-2.5 w-full text-gray-900 rounded-lg border border-gray-300
                                     focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600
@@ -105,5 +104,14 @@
         @endforeach
     </ul>
 
+    @if ($model->questions()->count() > $cant)
+        <div class="flex items-center">
+            <hr class="flex-1">
+            <button class=" text-sm font-semibold text-gray-500 hover:text-gray-600 mx-4" wire:click="show_more_questions()">
+                Ver los {{ $model->questions()->count() - $cant }} comentarios restantes
+            </button>
+            <hr class="flex-1">
+        </div>
+    @endif
 
 </div>

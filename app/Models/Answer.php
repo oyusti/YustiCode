@@ -9,6 +9,8 @@ class Answer extends Model
 {
     use HasFactory;
 
+    protected $fillable=['body', 'user_id'];
+
     //Relationships one to many inverse with question
     public function question()
     {

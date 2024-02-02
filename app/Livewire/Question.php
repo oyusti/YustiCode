@@ -15,6 +15,8 @@ class Question extends Component
 
     public $questions;
 
+    public $cant = 5;
+
     public $question_edit = [
         'id' => null,
         'body' => ''
@@ -25,14 +27,14 @@ class Question extends Component
     }
 
     public function getQuestions(){
-        $this->questions = $this->model->questions()->orderBy('created_at', 'desc')->get();
+        $this->questions = $this->model->questions()->take($this->cant)->orderBy('created_at', 'desc')->get();
     }
 
     public function store(){
-
-        $this->validate([
+        
+        /* $this->validate([
             'message' => 'required'
-        ]);
+        ]); */
         $this->model->questions()->create([
             'body' => $this->message,
             'user_id' => auth()->id()
@@ -66,7 +68,7 @@ class Question extends Component
         $question->update([
                 'body' => $this->question_edit['body']
             ]);
-        $this->resetValidation();    
+        //$this->resetValidation();    
         $this->getQuestions();
         $this->reset('question_edit'); // Reset the question_edit property (id and body
     }
@@ -82,6 +84,11 @@ class Question extends Component
         $question->delete();
         $this->getQuestions();
         $this->reset('question_edit'); // Reset the question_edit property (id and body
+    }
+
+    public function show_more_questions(){
+        $this->cant += 5;
+        $this->getQuestions();
     }
 
     public function render()
