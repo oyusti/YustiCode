@@ -13,22 +13,26 @@ class Question extends Component
 
     public $model;
 
-    public $questions;
-
     public $cant = 5;
+
+    public $caja_comentario = true;
 
     public $question_edit = [
         'id' => null,
         'body' => ''
     ];
 
-    public function mount(){
+    /* public function mount(){
         $this->getQuestions();
+    } */
+
+    public function getQuestionsProperty(){
+        return $this->model->questions()->take($this->cant)->orderBy('created_at', 'desc')->get();
     }
 
-    public function getQuestions(){
+    /* public function getQuestions(){
         $this->questions = $this->model->questions()->take($this->cant)->orderBy('created_at', 'desc')->get();
-    }
+    } */
 
     public function store(){
         
@@ -40,7 +44,8 @@ class Question extends Component
             'user_id' => auth()->id()
         ]);
         $this->message = '';
-        $this->getQuestions();
+
+        $this->caja_comentario = false;
     }
 
     public function edit($question_id){
@@ -49,8 +54,6 @@ class Question extends Component
             'id' => $question->id,
             'body' => $question->body
         ];
-
-        $this->getQuestions();
     }
 
     public function update(){
@@ -69,26 +72,22 @@ class Question extends Component
                 'body' => $this->question_edit['body']
             ]);
         //$this->resetValidation();    
-        $this->getQuestions();
         $this->reset('question_edit'); // Reset the question_edit property (id and body
     }
 
     public function cancel(){
         $this->reset('question_edit'); // Reset the question_edit property (id and body
         $this->resetValidation();
-        $this->getQuestions();
     }
 
     public function destroy($id){
         $question = ModelsQuestion::find($id);
         $question->delete();
-        $this->getQuestions();
         $this->reset('question_edit'); // Reset the question_edit property (id and body
     }
 
     public function show_more_questions(){
         $this->cant += 5;
-        $this->getQuestions();
     }
 
     public function render()

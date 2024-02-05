@@ -9,7 +9,7 @@ class Answer extends Component
 
     public $question;
 
-    public $answers; 
+    public $cant = 0;
 
     public $answer_create = [
         'open' => false,
@@ -21,12 +21,8 @@ class Answer extends Component
         'id' => null
     ];
 
-    public function mount(){
-        $this->getAnswer();
-    }
-
-    public function getAnswer(){
-        $this->answers = $this->question->answers()->get();
+    public function getAnswersProperty(){
+        return $this->question->answers()->get()->take($this->cant * (-1));
     }
 
     public function store(){
@@ -43,6 +39,8 @@ class Answer extends Component
         ]);
 
         $this->reset('answer_create');
+
+        $this->cant += 1;
         
         //$this->question = $this->question->fresh();
     }
@@ -60,8 +58,14 @@ class Answer extends Component
         ]);
 
         $this->reset('answer_to_answer');
+    }
 
-        $this->getAnswer();
+    public function show_answer(){
+        if($this->cant < $this->question->answers()->count()){
+            $this->cant = $this->question->answers()->count();
+        }else{
+            $this->cant = 0;
+        }
     }
 
     public function render(){
