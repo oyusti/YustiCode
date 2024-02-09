@@ -22,9 +22,7 @@
         x-init=" $watch('title', value => {string_to_slug(value)})" >
         @csrf
 
-        <x-validation-errors class=" mb-4">
-
-        </x-validation-errors>
+        <x-validation-errors class=" mb-4"> </x-validation-errors>
 
         {{-- div para el titulo --}}
         <div class="mb-3">

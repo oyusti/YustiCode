@@ -32,17 +32,22 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+
         $request->validate([
             'name'  => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
             'password' => 'nullable|string|min:8|confirmed',
         ]);
 
-        $user->name = $request->name;
-        $user->email = $request->email;
+        $user->update([
+            'name'  => $request->name,
+            'email' => $request->email,
+        ]);
 
         if($request->password != null){
-            $user->password = bcrypt($request->password);
+            $user->update ([
+                'password' => bcrypt($request->password)
+            ]);
         }
 
         $user->roles()->sync($request->roles);
@@ -53,7 +58,7 @@ class UserController extends Controller
             'text'  => 'El usuario se ha actualizado correctamente'
         ]);
 
-        return redirect()->route('admin.users.edit', $user);
+        return redirect()->route('admin.users.index', $user);
     }
 
     /**
